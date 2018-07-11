@@ -1,65 +1,52 @@
-process.stdin.resume()
-process.stdin.setEncoding('utf8')
+const MSG_READY = '「じゃんけん・・・」'
+const MSG_CHOOSE = '>0.グー 1.チョキ 2.パー'
+const MSG_GO = '「ぽい！」'
+const MSG_DROW = '「アイコでしょ！」'
+const MSG_WIN = '「あなたの勝ち！」'
+const MSG_LOSE = '「あなたの負け！！」'
 
-var MSG1 = '「じゃんけん・・・」'
-var MSG2 = '>0.グー 1.チョキ 2.パー'
-var MSG3 = '「ぽい！」'
-var MSG4 = '「アイコでしょ！」'
-var MSG5 = '「あなたの勝ち！」'
-var MSG6 = '「あなたの負け！！」'
+outMSG_FIRST()
 
-outMSG()
-
-function outMSG() {
-  console.log(MSG1)
-  console.log(MSG2)
+function outMSG_FIRST() {
+  console.log(MSG_READY)
+  console.log(MSG_CHOOSE)
 }
 
 // 標準入力がくると発生するイベント
-process.stdin.on('data', function(chunk) {
-  chunk
-    .trim()
-    .split('\n')
-    .forEach(function(line) {
-      // 1行ずつ処理
-      console.log(MSG3)
-      outLines(line)
-    })
-})
+process.stdin
+  .resume()
+  .setEncoding('utf8')
+  .on('data', function(chunk) {
+    chunk
+      .trim()
+      .split('\n')
+      .forEach(function(line) {
+        // 1行ずつ処理
+        console.log(MSG_GO)
+        outLines(line)
+      })
+  })
 
 function outLines(line) {
-  var rnd
+  const HANDS = ['グー', 'チョキ', 'パー']
 
   //0～2の値をランダムで取得
-  rnd = Math.floor(Math.random() * 3)
+  const COM_HAND = Math.floor(Math.random() * 3)
+  console.log('コンピュータ：' + HANDS[COM_HAND])
 
-  console.log('コンピュータ：' + getHand(rnd))
-  console.log('あなた　：' + getHand(Number(line)))
+  const YOUR_HAND = Number(line)
+  console.log('あなた　：' + HANDS[YOUR_HAND])
 
-  if (line == rnd) {
-    console.log(MSG4)
-    outMSG()
-  } else if ((line == 0 && rnd == 1) || (line == 1 && rnd == 2) || (line == 2 && rnd == 0)) {
-    console.log(MSG5)
+  if (YOUR_HAND === COM_HAND) {
+    console.log(MSG_DROW)
+    outMSG_FIRST()
+  } else if (
+    (YOUR_HAND === 0 && COM_HAND === 1) ||
+    (YOUR_HAND === 1 && COM_HAND === 2) ||
+    (YOUR_HAND === 2 && COM_HAND === 0)
+  ) {
+    console.log(MSG_WIN)
   } else {
-    console.log(MSG6)
+    console.log(MSG_LOSE)
   }
-}
-
-function getHand(num) {
-  var hand
-  switch (num) {
-    case 0:
-      hand = 'グー'
-      break
-    case 1:
-      hand = 'チョキ'
-      break
-    case 2:
-      hand = 'パー'
-      break
-    default:
-      hand = '???'
-  }
-  return hand
 }

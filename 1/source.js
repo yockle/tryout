@@ -1,35 +1,36 @@
-process.stdin.resume()
-process.stdin.setEncoding('utf8')
 // 標準入力がくると発生するイベント
-process.stdin.on('data', function(chunk) {
-  chunk
-    .trim()
-    .split('\n')
-    .forEach(function(line) {
-      // 1行ずつ処理
-      outLines(line)
-    })
-})
+process.stdin
+  .resume()
+  .setEncoding('utf8')
+  .on('data', function(chunk) {
+    chunk
+      .trim()
+      .split('\n')
+      .forEach(function(line) {
+        // 1行ずつ処理
+        outLines(line)
+      })
+  })
 
 function outLines(num) {
-  var outStr
-  var tmpStr
-  outStr = '' // 1から入力された数字-1までループ
+  const MOD3_0 = 'Fizz'
+  const MOD5_0 = 'Buzz'
+  let outStr = []
+  let tmpStr
   for (var i = 1; i < num; i++) {
-    tmpStr = '' // ３で割り切れる場合
-    if (i % 3 == 0) {
-      tmpStr = 'Fizz'
+    tmpStr = ''
+    if (i % 3 === 0) {
+      tmpStr = MOD3_0
     }
-    // ５で割り切れる場合
-    if (i % 5 == 0) {
-      tmpStr += 'Buzz'
+    if (i % 5 === 0) {
+      tmpStr += MOD5_0
     }
-    // 割り切れなかった場合
-    if (tmpStr == '') {
+    // 割り切れた場合はtmpStrに文字が格納されるため、
+    // tmpStrが空文字の場合に数字をそのまま出力する
+    if (tmpStr === '') {
       tmpStr = i
     }
-    outStr += tmpStr + ','
+    outStr.push(tmpStr)
   }
-  // 末尾の','を除いて出力
-  console.log(outStr.slice(0, -1))
+  console.log(outStr.join(','))
 }
