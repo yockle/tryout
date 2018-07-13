@@ -12,22 +12,15 @@ process.stdin
       })
   })
 
-var records
-
 function outLines(line) {
-  records = []
-  setRecords(Number(line))
-  let results = records.reduce(function(prev, record) {
-    return prev + record
-  }, 0)
-  console.log('1から' + line + 'までの合計　：' + results)
+  const result = sumToOne(Number(line))
+  console.log('1から' + line + 'までの合計　：' + result)
 }
 
-//reduceで合計値を算出するため、
-//入力値から１までを格納した配列をreturnする
-function setRecords(num) {
-  records.push(num)
+//入力値から１までを再起処理で加算する
+function sumToOne(num) {
   if (num > 1) {
-    setRecords(num - 1)
+    num += sumToOne(num - 1)
   }
+  return num
 }
